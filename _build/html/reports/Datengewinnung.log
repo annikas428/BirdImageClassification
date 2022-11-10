@@ -1,0 +1,178 @@
+Traceback (most recent call last):
+  File "C:\Users\Annika\anaconda3\lib\site-packages\jupyter_cache\executors\utils.py", line 51, in single_nb_execution
+    executenb(
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "C:\Users\Annika\anaconda3\lib\asyncio\base_events.py", line 647, in run_until_complete
+    return future.result()
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "C:\Users\Annika\anaconda3\lib\site-packages\nbclient\client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+# Schleife zum automatiserten Suchen und Downloaden von Google Bilder Suchergebnissen zu den definierten Klassen:
+for birds in Labels:
+
+	# webdriver instance erstellen
+	driver = webdriver.Chrome(r'..\ProjectBirdClassification\chromedriver1.exe')
+	driver.implicitly_wait(3)
+	# Browser Fenster maximieren
+	driver.maximize_window()
+
+
+	# Google Images öffnen
+	driver.get('https://images.google.com/')
+
+
+	#Cookie Window akzeptieren
+	driver.find_element("xpath", '/html/body/div[2]/div[2]/div[3]/span/div/div/div/div[3]/div[1]/button[2]/div').click()
+
+
+	# Suchleiste auswählen
+	box = driver.find_element("xpath", '/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input')
+
+	# Suchanfrage eingeben (Vogelarten). Um die Qualität der Suchergebnisse zu erhöhen,  
+    # wird außerdem zum Name des Vogels noch der string "bird photo" ergänzt
+	box.send_keys(birds + ' bird photo')
+
+	# Suchanfrage abschicken
+	box.send_keys(Keys.ENTER)
+
+	# Aufrufen der zuvor definierten Scroll Funktion, um mehr als nur die ersten Suchergebniss runterladen zu können
+	scroll_to_bottom()
+
+
+	# Schleife um die ersten 600 gefunden Bilder ja Klasse zu speichern
+	for i in range(1, 1000):
+
+		try:
+			try:
+				# XPath der Bilder, dieser ändert sich nur an einer Stelle und zählt von 1 aufsteigend durch  
+                # (Erstes Suchergebnis hat die 1, zweites die 2 usw. an der entsprechenden Stelle im Pfad)
+				print("//*[@id='islrg']/div[1]/div[" +
+					str(i) + "]/a[1]/div[1]/img")
+				img = driver.find_element("xpath",
+					'//*[@id="islrg"]/div[1]/div[' +
+					str(i) + ']/a[1]/div[1]/img')
+
+			except:
+				print("Element konnte nicht gefunden werden")
+			# Pfad, unter dem die Bilder lokal abgespeichert werden sollen
+			img.screenshot(r'..\ProjectBirdClassification\Bilder\\' +
+						birds + ' (' + str(i) + ').png')
+
+			# kurz warten um Error zu vermeiden
+			time.sleep(0.2)
+		except:
+			print("mistake")
+			# Wenn Bild nicht gefunden und gespeichert werden kann, gehen wir weiter zum nächsten Bild
+			continue
+            
+	# Schließen des Browsers
+	driver.close()
+
+------------------
+
+[1;31m---------------------------------------------------------------------------[0m
+[1;31mFileNotFoundError[0m                         Traceback (most recent call last)
+File [1;32m~\anaconda3\lib\site-packages\selenium\webdriver\common\service.py:71[0m, in [0;36mService.start[1;34m(self)[0m
+[0;32m     70[0m     cmd[38;5;241m.[39mextend([38;5;28mself[39m[38;5;241m.[39mcommand_line_args())
+[1;32m---> 71[0m     [38;5;28mself[39m[38;5;241m.[39mprocess [38;5;241m=[39m [43msubprocess[49m[38;5;241;43m.[39;49m[43mPopen[49m[43m([49m[43mcmd[49m[43m,[49m[43m [49m[43menv[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43menv[49m[43m,[49m
+[0;32m     72[0m [43m                                    [49m[43mclose_fds[49m[38;5;241;43m=[39;49m[43msystem[49m[43m([49m[43m)[49m[43m [49m[38;5;241;43m!=[39;49m[43m [49m[38;5;124;43m'[39;49m[38;5;124;43mWindows[39;49m[38;5;124;43m'[39;49m[43m,[49m
+[0;32m     73[0m [43m                                    [49m[43mstdout[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mlog_file[49m[43m,[49m
+[0;32m     74[0m [43m                                    [49m[43mstderr[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mlog_file[49m[43m,[49m
+[0;32m     75[0m [43m                                    [49m[43mstdin[49m[38;5;241;43m=[39;49m[43mPIPE[49m[43m,[49m
+[0;32m     76[0m [43m                                    [49m[43mcreationflags[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mcreationflags[49m[43m)[49m
+[0;32m     77[0m [38;5;28;01mexcept[39;00m [38;5;167;01mTypeError[39;00m:
+
+File [1;32m~\anaconda3\lib\subprocess.py:951[0m, in [0;36mPopen.__init__[1;34m(self, args, bufsize, executable, stdin, stdout, stderr, preexec_fn, close_fds, shell, cwd, env, universal_newlines, startupinfo, creationflags, restore_signals, start_new_session, pass_fds, user, group, extra_groups, encoding, errors, text, umask)[0m
+[0;32m    948[0m             [38;5;28mself[39m[38;5;241m.[39mstderr [38;5;241m=[39m io[38;5;241m.[39mTextIOWrapper([38;5;28mself[39m[38;5;241m.[39mstderr,
+[0;32m    949[0m                     encoding[38;5;241m=[39mencoding, errors[38;5;241m=[39merrors)
+[1;32m--> 951[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43m_execute_child[49m[43m([49m[43margs[49m[43m,[49m[43m [49m[43mexecutable[49m[43m,[49m[43m [49m[43mpreexec_fn[49m[43m,[49m[43m [49m[43mclose_fds[49m[43m,[49m
+[0;32m    952[0m [43m                        [49m[43mpass_fds[49m[43m,[49m[43m [49m[43mcwd[49m[43m,[49m[43m [49m[43menv[49m[43m,[49m
+[0;32m    953[0m [43m                        [49m[43mstartupinfo[49m[43m,[49m[43m [49m[43mcreationflags[49m[43m,[49m[43m [49m[43mshell[49m[43m,[49m
+[0;32m    954[0m [43m                        [49m[43mp2cread[49m[43m,[49m[43m [49m[43mp2cwrite[49m[43m,[49m
+[0;32m    955[0m [43m                        [49m[43mc2pread[49m[43m,[49m[43m [49m[43mc2pwrite[49m[43m,[49m
+[0;32m    956[0m [43m                        [49m[43merrread[49m[43m,[49m[43m [49m[43merrwrite[49m[43m,[49m
+[0;32m    957[0m [43m                        [49m[43mrestore_signals[49m[43m,[49m
+[0;32m    958[0m [43m                        [49m[43mgid[49m[43m,[49m[43m [49m[43mgids[49m[43m,[49m[43m [49m[43muid[49m[43m,[49m[43m [49m[43mumask[49m[43m,[49m
+[0;32m    959[0m [43m                        [49m[43mstart_new_session[49m[43m)[49m
+[0;32m    960[0m [38;5;28;01mexcept[39;00m:
+[0;32m    961[0m     [38;5;66;03m# Cleanup if the child failed starting.[39;00m
+
+File [1;32m~\anaconda3\lib\subprocess.py:1420[0m, in [0;36mPopen._execute_child[1;34m(self, args, executable, preexec_fn, close_fds, pass_fds, cwd, env, startupinfo, creationflags, shell, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite, unused_restore_signals, unused_gid, unused_gids, unused_uid, unused_umask, unused_start_new_session)[0m
+[0;32m   1419[0m [38;5;28;01mtry[39;00m:
+[1;32m-> 1420[0m     hp, ht, pid, tid [38;5;241m=[39m [43m_winapi[49m[38;5;241;43m.[39;49m[43mCreateProcess[49m[43m([49m[43mexecutable[49m[43m,[49m[43m [49m[43margs[49m[43m,[49m
+[0;32m   1421[0m [43m                             [49m[38;5;66;43;03m# no special security[39;49;00m
+[0;32m   1422[0m [43m                             [49m[38;5;28;43;01mNone[39;49;00m[43m,[49m[43m [49m[38;5;28;43;01mNone[39;49;00m[43m,[49m
+[0;32m   1423[0m [43m                             [49m[38;5;28;43mint[39;49m[43m([49m[38;5;129;43;01mnot[39;49;00m[43m [49m[43mclose_fds[49m[43m)[49m[43m,[49m
+[0;32m   1424[0m [43m                             [49m[43mcreationflags[49m[43m,[49m
+[0;32m   1425[0m [43m                             [49m[43menv[49m[43m,[49m
+[0;32m   1426[0m [43m                             [49m[43mcwd[49m[43m,[49m
+[0;32m   1427[0m [43m                             [49m[43mstartupinfo[49m[43m)[49m
+[0;32m   1428[0m [38;5;28;01mfinally[39;00m:
+[0;32m   1429[0m     [38;5;66;03m# Child is launched. Close the parent's copy of those pipe[39;00m
+[0;32m   1430[0m     [38;5;66;03m# handles that only the child should have open.  You need[39;00m
+[1;32m   (...)[0m
+[0;32m   1433[0m     [38;5;66;03m# pipe will not close when the child process exits and the[39;00m
+[0;32m   1434[0m     [38;5;66;03m# ReadFile will hang.[39;00m
+
+[1;31mFileNotFoundError[0m: [WinError 2] Das System kann die angegebene Datei nicht finden
+
+During handling of the above exception, another exception occurred:
+
+[1;31mWebDriverException[0m                        Traceback (most recent call last)
+Input [1;32mIn [5][0m, in [0;36m<cell line: 2>[1;34m()[0m
+[0;32m      1[0m [38;5;66;03m# Schleife zum automatiserten Suchen und Downloaden von Google Bilder Suchergebnissen zu den definierten Klassen:[39;00m
+[0;32m      2[0m [38;5;28;01mfor[39;00m birds [38;5;129;01min[39;00m Labels:
+[0;32m      3[0m 
+[0;32m      4[0m 	[38;5;66;03m# webdriver instance erstellen[39;00m
+[1;32m----> 5[0m 	driver [38;5;241m=[39m [43mwebdriver[49m[38;5;241;43m.[39;49m[43mChrome[49m[43m([49m[38;5;124;43mr[39;49m[38;5;124;43m'[39;49m[38;5;124;43m..[39;49m[38;5;124;43m\[39;49m[38;5;124;43mProjectBirdClassification[39;49m[38;5;124;43m\[39;49m[38;5;124;43mchromedriver1.exe[39;49m[38;5;124;43m'[39;49m[43m)[49m
+[0;32m      6[0m 	driver[38;5;241m.[39mimplicitly_wait([38;5;241m3[39m)
+[0;32m      7[0m 	[38;5;66;03m# Browser Fenster maximieren[39;00m
+
+File [1;32m~\anaconda3\lib\site-packages\selenium\webdriver\chrome\webdriver.py:69[0m, in [0;36mWebDriver.__init__[1;34m(self, executable_path, port, options, service_args, desired_capabilities, service_log_path, chrome_options, service, keep_alive)[0m
+[0;32m     66[0m [38;5;28;01mif[39;00m [38;5;129;01mnot[39;00m service:
+[0;32m     67[0m     service [38;5;241m=[39m Service(executable_path, port, service_args, service_log_path)
+[1;32m---> 69[0m [38;5;28;43msuper[39;49m[43m([49m[43m)[49m[38;5;241;43m.[39;49m[38;5;21;43m__init__[39;49m[43m([49m[43mDesiredCapabilities[49m[38;5;241;43m.[39;49m[43mCHROME[49m[43m[[49m[38;5;124;43m'[39;49m[38;5;124;43mbrowserName[39;49m[38;5;124;43m'[39;49m[43m][49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mgoog[39;49m[38;5;124;43m"[39;49m[43m,[49m
+[0;32m     70[0m [43m                 [49m[43mport[49m[43m,[49m[43m [49m[43moptions[49m[43m,[49m
+[0;32m     71[0m [43m                 [49m[43mservice_args[49m[43m,[49m[43m [49m[43mdesired_capabilities[49m[43m,[49m
+[0;32m     72[0m [43m                 [49m[43mservice_log_path[49m[43m,[49m[43m [49m[43mservice[49m[43m,[49m[43m [49m[43mkeep_alive[49m[43m)[49m
+
+File [1;32m~\anaconda3\lib\site-packages\selenium\webdriver\chromium\webdriver.py:89[0m, in [0;36mChromiumDriver.__init__[1;34m(self, browser_name, vendor_prefix, port, options, service_args, desired_capabilities, service_log_path, service, keep_alive)[0m
+[0;32m     86[0m     [38;5;28;01mraise[39;00m [38;5;167;01mAttributeError[39;00m([38;5;124m'[39m[38;5;124mservice cannot be None[39m[38;5;124m'[39m)
+[0;32m     88[0m [38;5;28mself[39m[38;5;241m.[39mservice [38;5;241m=[39m service
+[1;32m---> 89[0m [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mservice[49m[38;5;241;43m.[39;49m[43mstart[49m[43m([49m[43m)[49m
+[0;32m     91[0m [38;5;28;01mtry[39;00m:
+[0;32m     92[0m     [38;5;28msuper[39m()[38;5;241m.[39m[38;5;21m__init__[39m(
+[0;32m     93[0m         command_executor[38;5;241m=[39mChromiumRemoteConnection(
+[0;32m     94[0m             remote_server_addr[38;5;241m=[39m[38;5;28mself[39m[38;5;241m.[39mservice[38;5;241m.[39mservice_url,
+[0;32m     95[0m             browser_name[38;5;241m=[39mbrowser_name, vendor_prefix[38;5;241m=[39mvendor_prefix,
+[0;32m     96[0m             keep_alive[38;5;241m=[39mkeep_alive, ignore_proxy[38;5;241m=[39m_ignore_proxy),
+[0;32m     97[0m         options[38;5;241m=[39moptions)
+
+File [1;32m~\anaconda3\lib\site-packages\selenium\webdriver\common\service.py:81[0m, in [0;36mService.start[1;34m(self)[0m
+[0;32m     79[0m [38;5;28;01mexcept[39;00m [38;5;167;01mOSError[39;00m [38;5;28;01mas[39;00m err:
+[0;32m     80[0m     [38;5;28;01mif[39;00m err[38;5;241m.[39merrno [38;5;241m==[39m errno[38;5;241m.[39mENOENT:
+[1;32m---> 81[0m         [38;5;28;01mraise[39;00m WebDriverException(
+[0;32m     82[0m             [38;5;124m"[39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m executable needs to be in PATH. [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(
+[0;32m     83[0m                 os[38;5;241m.[39mpath[38;5;241m.[39mbasename([38;5;28mself[39m[38;5;241m.[39mpath), [38;5;28mself[39m[38;5;241m.[39mstart_error_message)
+[0;32m     84[0m         )
+[0;32m     85[0m     [38;5;28;01melif[39;00m err[38;5;241m.[39merrno [38;5;241m==[39m errno[38;5;241m.[39mEACCES:
+[0;32m     86[0m         [38;5;28;01mraise[39;00m WebDriverException(
+[0;32m     87[0m             [38;5;124m"[39m[38;5;124m'[39m[38;5;132;01m{}[39;00m[38;5;124m'[39m[38;5;124m executable may have wrong permissions. [39m[38;5;132;01m{}[39;00m[38;5;124m"[39m[38;5;241m.[39mformat(
+[0;32m     88[0m                 os[38;5;241m.[39mpath[38;5;241m.[39mbasename([38;5;28mself[39m[38;5;241m.[39mpath), [38;5;28mself[39m[38;5;241m.[39mstart_error_message)
+[0;32m     89[0m         )
+
+[1;31mWebDriverException[0m: Message: 'chromedriver1.exe' executable needs to be in PATH. Please see https://chromedriver.chromium.org/home
+
+WebDriverException: Message: 'chromedriver1.exe' executable needs to be in PATH. Please see https://chromedriver.chromium.org/home
+
+

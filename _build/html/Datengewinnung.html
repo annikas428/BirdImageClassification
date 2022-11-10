@@ -1,0 +1,758 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Notebook 1 - Datengewinnung &#8212; Bird Image Classification</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/vendor/fontawesome/5.13.0/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/copybutton_funcs.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/documentation_options.js"></script>
+    <script src="_static/jquery-3.5.1.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/sphinx-thebe.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/underscore-1.13.1.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/scripts/pydata-sphinx-theme.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Notebook 2 - Modellierung eines Classifiers durch Supervised Learning" href="ModellingFinal.html" />
+    <link rel="prev" title="Klassifizierung von Vogelbildern mit Neuronalen Netzen" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Bird Image Classification</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Klassifizierung von Vogelbildern mit Neuronalen Netzen
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Notebook 1 - Datengewinnung
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ModellingFinal.html">
+   Notebook 2 - Modellierung eines Classifiers durch Supervised Learning
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/annikas428/BirdImageClassification/master?urlpath=tree/docs/Datengewinnung.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/annikas428/BirdImageClassification/settings/pages"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/annikas428/BirdImageClassification/settings/pages/issues/new?title=Issue%20on%20page%20%2FDatengewinnung.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="_sources/Datengewinnung.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#erzeugung-des-datasets">
+   Erzeugung des Datasets
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Notebook 1 - Datengewinnung</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#setup">
+   Setup
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#erzeugung-des-datasets">
+   Erzeugung des Datasets
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="notebook-1-datengewinnung">
+<h1>Notebook 1 - Datengewinnung<a class="headerlink" href="#notebook-1-datengewinnung" title="Permalink to this headline">#</a></h1>
+<p>von Annika Scheug und Oliver Schabe</p>
+<p>Da es Im Internet bereits eine Vielzahl an Bilderdatensets und Bilderdatenbanken mit darauf aufbauenden Lösungen gibt, haben wir uns dazu entschieden, unser eigenes Datenset für eine Bilderklassifikation zu erstellen.<br />
+Dazu nutzen wir Selenium, ein open source Tool zur Automatisierung von Browseroperationen.<br />
+Mit Hilfe von Selenium durchsuchen wir Google Bilder automatisiert nach bestimmten Suchbegriffen und speichern die gefunden Bildern lokal auf unserem Rechner ab.</p>
+<p>Auf Basis des so generierten Datensets soll dann ein Neuronales Netz zur Erkennung von Bildern trainiert werden. Als zu klassifizierende Objekte haben wir uns für verschiedene Vogelarten entschieden.</p>
+<p>Die Interclass Varianz soll dabei nicht zu hoch sein, um eine angemessene Schwierigkeit sicherzustellen (da alles Vögel sind und in der Regel Schnabel, Flügel etc. haben). Um ein gutes Modell zu entwicklen, sollte die Interclass Varianz allrdings auch nicht zu niedrig sein, da sonst die richtige Klassifizierung sehr schwierig werden könnte.</p>
+<p>Auf Basis dieser Überlegung haben wir uns für folgende 9 Vogelarten entschieden, welche viele Merkmale wie Flügel und Schnäbel teilen, sich allerdings optisch stark genug voneinander unterscheiden um im Rahmen dieses Projektes ein gut funktionierendes Modell zu entwicklen:</p>
+<ul class="simple">
+<li><p>eagle (Adler)<br />
+*tit (Meise)<br />
+*owl (Eule)<br />
+*tucan (Tukan)<br />
+*flamingo (Flamingo)<br />
+*ostrich (Vogelstrauß)<br />
+*cockatoo (Kakadu)<br />
+*chicken (Huhn)
+*penguin (Pinguin)</p></li>
+</ul>
+<p>Die Intraclass Varianz unterscheidet sich dabei bei den verschiedenen Klassen teilweise stark. Bei Adlern bspw. gibt es viel mehr Unterarten, die sich auch optisch voneinander Unterscheiden als bei Flamingos. Dies wird sich voraussichtlich in den Ergebnissen des Modells wiederspiegeln. Vermutlich werden Klassen mit höherer Intraclass Varianz schlechtere Ergebnisse erzielen.</p>
+<p><img alt="AdlerVarianz" src="AdlerVarianz.png" /></p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
+<p>Zuerst werden die benötigten packages und libraries installiert bzw importiert.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Installieren von Selenium</span>
+<span class="c1">#pip install selenium</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Importieren von Selenium Libraries</span>
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="kn">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="kn">import</span> <span class="n">WebDriverWait</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="kn">import</span> <span class="n">By</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="kn">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="kn">import</span> <span class="n">Keys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="erzeugung-des-datasets">
+<h2>Erzeugung des Datasets<a class="headerlink" href="#erzeugung-des-datasets" title="Permalink to this headline">#</a></h2>
+<p>Hier wird zunächst eine Liste erstellt, welche alle Suchbegriffe enthält, zu denen Bilder gesucht werden sollen.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># List erstellen von zu klassifizierenden Vögeln</span>
+<span class="n">Labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;eagle&quot;</span><span class="p">,</span><span class="s2">&quot;tit&quot;</span><span class="p">,</span><span class="s2">&quot;owl&quot;</span><span class="p">,</span><span class="s2">&quot;tucan&quot;</span><span class="p">,</span><span class="s2">&quot;flamingo&quot;</span><span class="p">,</span><span class="s2">&quot;ostrich&quot;</span><span class="p">,</span><span class="s2">&quot;cockatoo&quot;</span><span class="p">,</span><span class="s2">&quot;chicken&quot;</span><span class="p">,</span><span class="s2">&quot;penguin&quot;</span><span class="p">]</span>
+<span class="n">Labels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;eagle&#39;,
+ &#39;tit&#39;,
+ &#39;owl&#39;,
+ &#39;tucan&#39;,
+ &#39;flamingo&#39;,
+ &#39;ostrich&#39;,
+ &#39;cockatoo&#39;,
+ &#39;chicken&#39;,
+ &#39;penguin&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Der folgende Code durchsucht mit Hilfe von Selenium Google Bilder nach den definierten Suchbegriffen und speichert die gefundenen Bilder lokal ab. Die automatisierte Navigation durch den Chrome Browser erfolgt auf Basis des “xpath”.<br />
+Der xpath gibt die genaue Platzierung eines Objekts (bspw. Google Suche Eingabefeld) im html Quellcode an.</p>
+<p>Details zur Methode sind im Code direkt kommentiert.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Definition einer Funktion zum Durchscrollen der Google Bilder Suchergebnisse</span>
+<span class="k">def</span> <span class="nf">scroll_to_bottom</span><span class="p">():</span>
+
+	<span class="n">last_height</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\</span>
+<span class="s1">	return document.body.scrollHeight&#39;</span><span class="p">)</span>
+
+	<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+		<span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\</span>
+<span class="s1">		window.scrollTo(0,document.body.scrollHeight)&#39;</span><span class="p">)</span>
+
+		<span class="c1"># kurz warten um Ergebnisse laden zu lassen</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+		<span class="n">new_height</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\</span>
+<span class="s1">		return document.body.scrollHeight&#39;</span><span class="p">)</span>
+
+		<span class="c1"># klicken von &quot;weitere Ergebnisse anzeigen&quot;</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;/html/body/div[2]/c-wiz/div[3]/div[1]/div/div/div/div[1]/div[2]/div[2]/input&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+			<span class="c1"># kurz warten um Ergebnisse laden zu lassen</span>
+			<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
+
+		<span class="k">except</span><span class="p">:</span>
+			<span class="k">pass</span>
+
+		<span class="c1"># Prüfen ob das Ende der Seite erreicht wurde</span>
+		<span class="k">if</span> <span class="n">new_height</span> <span class="o">==</span> <span class="n">last_height</span><span class="p">:</span>
+			<span class="k">break</span>
+
+		<span class="n">last_height</span> <span class="o">=</span> <span class="n">new_height</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Schleife zum automatiserten Suchen und Downloaden von Google Bilder Suchergebnissen zu den definierten Klassen:</span>
+<span class="k">for</span> <span class="n">birds</span> <span class="ow">in</span> <span class="n">Labels</span><span class="p">:</span>
+
+	<span class="c1"># webdriver instance erstellen</span>
+	<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;..\ProjectBirdClassification\chromedriver1.exe&#39;</span><span class="p">)</span>
+	<span class="n">driver</span><span class="o">.</span><span class="n">implicitly_wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+	<span class="c1"># Browser Fenster maximieren</span>
+	<span class="n">driver</span><span class="o">.</span><span class="n">maximize_window</span><span class="p">()</span>
+
+
+	<span class="c1"># Google Images öffnen</span>
+	<span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://images.google.com/&#39;</span><span class="p">)</span>
+
+
+	<span class="c1">#Cookie Window akzeptieren</span>
+	<span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s1">&#39;/html/body/div[2]/div[2]/div[3]/span/div/div/div/div[3]/div[1]/button[2]/div&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+
+	<span class="c1"># Suchleiste auswählen</span>
+	<span class="n">box</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s1">&#39;/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Suchanfrage eingeben (Vogelarten). Um die Qualität der Suchergebnisse zu erhöhen,  </span>
+    <span class="c1"># wird außerdem zum Name des Vogels noch der string &quot;bird photo&quot; ergänzt</span>
+	<span class="n">box</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">birds</span> <span class="o">+</span> <span class="s1">&#39; bird photo&#39;</span><span class="p">)</span>
+
+	<span class="c1"># Suchanfrage abschicken</span>
+	<span class="n">box</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">Keys</span><span class="o">.</span><span class="n">ENTER</span><span class="p">)</span>
+
+	<span class="c1"># Aufrufen der zuvor definierten Scroll Funktion, um mehr als nur die ersten Suchergebniss runterladen zu können</span>
+	<span class="n">scroll_to_bottom</span><span class="p">()</span>
+
+
+	<span class="c1"># Schleife um die ersten 600 gefunden Bilder ja Klasse zu speichern</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">):</span>
+
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">try</span><span class="p">:</span>
+				<span class="c1"># XPath der Bilder, dieser ändert sich nur an einer Stelle und zählt von 1 aufsteigend durch  </span>
+                <span class="c1"># (Erstes Suchergebnis hat die 1, zweites die 2 usw. an der entsprechenden Stelle im Pfad)</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;//*[@id=&#39;islrg&#39;]/div[1]/div[&quot;</span> <span class="o">+</span>
+					<span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]/a[1]/div[1]/img&quot;</span><span class="p">)</span>
+				<span class="n">img</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span>
+					<span class="s1">&#39;//*[@id=&quot;islrg&quot;]/div[1]/div[&#39;</span> <span class="o">+</span>
+					<span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;]/a[1]/div[1]/img&#39;</span><span class="p">)</span>
+
+			<span class="k">except</span><span class="p">:</span>
+				<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Element konnte nicht gefunden werden&quot;</span><span class="p">)</span>
+			<span class="c1"># Pfad, unter dem die Bilder lokal abgespeichert werden sollen</span>
+			<span class="n">img</span><span class="o">.</span><span class="n">screenshot</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;..\ProjectBirdClassification\Bilder</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span>
+						<span class="n">birds</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;).png&#39;</span><span class="p">)</span>
+
+			<span class="c1"># kurz warten um Error zu vermeiden</span>
+			<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mistake&quot;</span><span class="p">)</span>
+			<span class="c1"># Wenn Bild nicht gefunden und gespeichert werden kann, gehen wir weiter zum nächsten Bild</span>
+			<span class="k">continue</span>
+            
+	<span class="c1"># Schließen des Browsers</span>
+	<span class="n">driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\Annika\AppData\Local\Temp\ipykernel_3616\1234777019.py:5: DeprecationWarning: executable_path has been deprecated, please pass in a Service object
+  driver = webdriver.Chrome(r&#39;..\ProjectBirdClassification\chromedriver1.exe&#39;)
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">File ~\anaconda3\lib\site-packages\selenium\webdriver\common\service.py:71,</span> in <span class="ni">Service.start</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span>     <span class="n">cmd</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">command_line_args</span><span class="p">())</span>
+<span class="ne">---&gt; </span><span class="mi">71</span>     <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>                                     <span class="n">close_fds</span><span class="o">=</span><span class="n">system</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;Windows&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">73</span>                                     <span class="n">stdout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span>                                     <span class="n">stderr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_file</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>                                     <span class="n">stdin</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>                                     <span class="n">creationflags</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">creationflags</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">77</span> <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+
+<span class="nn">File ~\anaconda3\lib\subprocess.py:951,</span> in <span class="ni">Popen.__init__</span><span class="nt">(self, args, bufsize, executable, stdin, stdout, stderr, preexec_fn, close_fds, shell, cwd, env, universal_newlines, startupinfo, creationflags, restore_signals, start_new_session, pass_fds, user, group, extra_groups, encoding, errors, text, umask)</span>
+<span class="g g-Whitespace">    </span><span class="mi">948</span>             <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">TextIOWrapper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">949</span>                     <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">951</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_execute_child</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">executable</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="p">,</span> <span class="n">close_fds</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">952</span>                         <span class="n">pass_fds</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">953</span>                         <span class="n">startupinfo</span><span class="p">,</span> <span class="n">creationflags</span><span class="p">,</span> <span class="n">shell</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">954</span>                         <span class="n">p2cread</span><span class="p">,</span> <span class="n">p2cwrite</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">955</span>                         <span class="n">c2pread</span><span class="p">,</span> <span class="n">c2pwrite</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">956</span>                         <span class="n">errread</span><span class="p">,</span> <span class="n">errwrite</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">957</span>                         <span class="n">restore_signals</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">958</span>                         <span class="n">gid</span><span class="p">,</span> <span class="n">gids</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">umask</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">959</span>                         <span class="n">start_new_session</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">960</span> <span class="k">except</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">961</span>     <span class="c1"># Cleanup if the child failed starting.</span>
+
+<span class="nn">File ~\anaconda3\lib\subprocess.py:1420,</span> in <span class="ni">Popen._execute_child</span><span class="nt">(self, args, executable, preexec_fn, close_fds, pass_fds, cwd, env, startupinfo, creationflags, shell, p2cread, p2cwrite, c2pread, c2pwrite, errread, errwrite, unused_restore_signals, unused_gid, unused_gids, unused_uid, unused_umask, unused_start_new_session)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1419</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1420</span>     <span class="n">hp</span><span class="p">,</span> <span class="n">ht</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">_winapi</span><span class="o">.</span><span class="n">CreateProcess</span><span class="p">(</span><span class="n">executable</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1421</span>                              <span class="c1"># no special security</span>
+<span class="g g-Whitespace">   </span><span class="mi">1422</span>                              <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1423</span>                              <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">close_fds</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1424</span>                              <span class="n">creationflags</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1425</span>                              <span class="n">env</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1426</span>                              <span class="n">cwd</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1427</span>                              <span class="n">startupinfo</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1428</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1429</span>     <span class="c1"># Child is launched. Close the parent&#39;s copy of those pipe</span>
+<span class="g g-Whitespace">   </span><span class="mi">1430</span>     <span class="c1"># handles that only the child should have open.  You need</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1433</span>     <span class="c1"># pipe will not close when the child process exits and the</span>
+<span class="g g-Whitespace">   </span><span class="mi">1434</span>     <span class="c1"># ReadFile will hang.</span>
+
+<span class="ne">FileNotFoundError</span>: [WinError 2] Das System kann die angegebene Datei nicht finden
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">WebDriverException</span><span class="g g-Whitespace">                        </span>Traceback (most recent call last)
+<span class="nn">Input In [5],</span> in <span class="ni">&lt;cell line: 2&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Schleife zum automatiserten Suchen und Downloaden von Google Bilder Suchergebnissen zu den definierten Klassen:</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="k">for</span> <span class="n">birds</span> <span class="ow">in</span> <span class="n">Labels</span><span class="p">:</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 	<span class="c1"># webdriver instance erstellen</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> 	<span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;..\ProjectBirdClassification\chromedriver1.exe&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> 	<span class="n">driver</span><span class="o">.</span><span class="n">implicitly_wait</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 	<span class="c1"># Browser Fenster maximieren</span>
+
+<span class="nn">File ~\anaconda3\lib\site-packages\selenium\webdriver\chrome\webdriver.py:69,</span> in <span class="ni">WebDriver.__init__</span><span class="nt">(self, executable_path, port, options, service_args, desired_capabilities, service_log_path, chrome_options, service, keep_alive)</span>
+<span class="g g-Whitespace">     </span><span class="mi">66</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">service</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">67</span>     <span class="n">service</span> <span class="o">=</span> <span class="n">Service</span><span class="p">(</span><span class="n">executable_path</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">service_args</span><span class="p">,</span> <span class="n">service_log_path</span><span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">69</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">DesiredCapabilities</span><span class="o">.</span><span class="n">CHROME</span><span class="p">[</span><span class="s1">&#39;browserName&#39;</span><span class="p">],</span> <span class="s2">&quot;goog&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">70</span>                  <span class="n">port</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">71</span>                  <span class="n">service_args</span><span class="p">,</span> <span class="n">desired_capabilities</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span>                  <span class="n">service_log_path</span><span class="p">,</span> <span class="n">service</span><span class="p">,</span> <span class="n">keep_alive</span><span class="p">)</span>
+
+<span class="nn">File ~\anaconda3\lib\site-packages\selenium\webdriver\chromium\webdriver.py:89,</span> in <span class="ni">ChromiumDriver.__init__</span><span class="nt">(self, browser_name, vendor_prefix, port, options, service_args, desired_capabilities, service_log_path, service, keep_alive)</span>
+<span class="g g-Whitespace">     </span><span class="mi">86</span>     <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;service cannot be None&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">88</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span> <span class="o">=</span> <span class="n">service</span>
+<span class="ne">---&gt; </span><span class="mi">89</span> <span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">91</span> <span class="k">try</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">92</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span>         <span class="n">command_executor</span><span class="o">=</span><span class="n">ChromiumRemoteConnection</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span>             <span class="n">remote_server_addr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">service</span><span class="o">.</span><span class="n">service_url</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span>             <span class="n">browser_name</span><span class="o">=</span><span class="n">browser_name</span><span class="p">,</span> <span class="n">vendor_prefix</span><span class="o">=</span><span class="n">vendor_prefix</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>             <span class="n">keep_alive</span><span class="o">=</span><span class="n">keep_alive</span><span class="p">,</span> <span class="n">ignore_proxy</span><span class="o">=</span><span class="n">_ignore_proxy</span><span class="p">),</span>
+<span class="g g-Whitespace">     </span><span class="mi">97</span>         <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nn">File ~\anaconda3\lib\site-packages\selenium\webdriver\common\service.py:81,</span> in <span class="ni">Service.start</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">     </span><span class="mi">79</span> <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">80</span>     <span class="k">if</span> <span class="n">err</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">ENOENT</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">81</span>         <span class="k">raise</span> <span class="n">WebDriverException</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">82</span>             <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; executable needs to be in PATH. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">83</span>                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_error_message</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">84</span>         <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">85</span>     <span class="k">elif</span> <span class="n">err</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">EACCES</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">86</span>         <span class="k">raise</span> <span class="n">WebDriverException</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">87</span>             <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; executable may have wrong permissions. </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">88</span>                 <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_error_message</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">89</span>         <span class="p">)</span>
+
+<span class="ne">WebDriverException</span>: Message: &#39;chromedriver1.exe&#39; executable needs to be in PATH. Please see https://chromedriver.chromium.org/home
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mit der hier verwendeten Methode können auch einfach für andere Klassifikationsaufgaben Bilder gewonnen werden um Modelle zur Erkennung von anderen Objekten zu trainieren. Es müssen lediglich die Suchbegriffe in der oben definierten Liste ausgetauscht werden.</p>
+<p>Nachteil der verwendeten Methode ist die teilweise durchmischte Qualität der Suchergebnisse. Immer wieder tauchen Bilder unter dem Suchbegriff auf, welche nicht das gesuchte Objekt abbilden oder in sehr abgeänderter/abstrakter Form. Diese müssen dann manuell entfernt werden, um eine hohe Qualität das Datensets sicherzsutellen.</p>
+<p>Die hier gewonnen Bilder sollen nun in einem nächste Notebook zum Trainieren eines CNN verwendet werden.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Klassifizierung von Vogelbildern mit Neuronalen Netzen</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="ModellingFinal.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Notebook 2 - Modellierung eines Classifiers durch Supervised Learning</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Oliver Schabe & Annika Scheug<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
