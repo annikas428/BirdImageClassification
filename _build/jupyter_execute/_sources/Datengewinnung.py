@@ -14,14 +14,14 @@
 # 
 # Auf Basis dieser Überlegung haben wir uns für folgende 9 Vogelarten entschieden, welche viele Merkmale wie Flügel und Schnäbel teilen, sich allerdings optisch stark genug voneinander unterscheiden um im Rahmen dieses Projektes ein gut funktionierendes Modell zu entwicklen:
 # * eagle (Adler)  
-# *tit (Meise)  
-# *owl (Eule)  
-# *tucan (Tukan)  
-# *flamingo (Flamingo)    
-# *ostrich (Vogelstrauß)  
-# *cockatoo (Kakadu)  
-# *chicken (Huhn) 
-# *penguin (Pinguin) 
+# * tit (Meise)  
+# * owl (Eule)  
+# * tucan (Tukan)  
+# * flamingo (Flamingo)    
+# * ostrich (Vogelstrauß)  
+# * cockatoo (Kakadu)  
+# * chicken (Huhn) 
+# * penguin (Pinguin) 
 # 
 # Die Intraclass Varianz unterscheidet sich dabei bei den verschiedenen Klassen teilweise stark. Bei Adlern bspw. gibt es viel mehr Unterarten, die sich auch optisch voneinander Unterscheiden als bei Flamingos. Dies wird sich voraussichtlich in den Ergebnissen des Modells wiederspiegeln. Vermutlich werden Klassen mit höherer Intraclass Varianz schlechtere Ergebnisse erzielen.  
 #   
