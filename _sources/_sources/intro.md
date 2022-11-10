@@ -1,11 +1,8 @@
-# Welcome to your Jupyter Book
+# Klassifizierung von Vogelbildern mit Neuronalen Netzen
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
-
-Check out the content pages bundled with this sample book to see more.
+In diesem Projekt geht es um die praktische Anwendung von Neuronalen Netzen für eine Bildklassifikation.  
+Dafür haben wir uns für die Klassifizierung von neun verschiedenen Vogelarten entschieden.  
+Notebook 1 beschäftigt sich mit der für die Klassifizierung notwendigen Datengewinnung. Anschließend werden in Notebook 2 diese Daten für die Klassifikation verwendet.  
 
 ```{tableofcontents}
 ```

@@ -25,7 +25,7 @@
 # 
 # Die Intraclass Varianz unterscheidet sich dabei bei den verschiedenen Klassen teilweise stark. Bei Adlern bspw. gibt es viel mehr Unterarten, die sich auch optisch voneinander Unterscheiden als bei Flamingos. Dies wird sich voraussichtlich in den Ergebnissen des Modells wiederspiegeln. Vermutlich werden Klassen mit höherer Intraclass Varianz schlechtere Ergebnisse erzielen.  
 #   
-# ![AdlerVarianz](AdlerVarianz.png)
+# ![AdlerVarianz](AdlerVarianz.PNG)
 
 # ## Setup
 
